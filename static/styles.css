@@ -1,0 +1,20 @@
+h1, h2 {
+    font-family: "Exo 2";
+    padding-top: 14px;
+    padding-bottom: 16px;
+    background-color: #009ACB;
+ }
+
+body {
+    font-family: "Exo 2";
+}
+
+.link:hover {
+    text-decoration: none;
+}
+
+.smlogo {
+    max-width: 14px;
+    margin-bottom: 4px;
+    text-decoration: none;
+}

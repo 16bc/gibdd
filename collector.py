@@ -70,7 +70,6 @@ def writefile(data, path="./data.json"):
 if __name__ == '__main__':
 
     url = 'https://гибдд.рф/'
-    filepath = "./data.json"
     # Читаем и десерим последнюю строку из файла
     last_list = readfile()
 

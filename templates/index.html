@@ -1,0 +1,139 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500&display=swap" rel="stylesheet">
+  <link href="{{ url_for('static',filename='styles.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="{{ url_for('static',filename='Chart.min.js') }}"></script>
+  <title>Аварийность на дорогах России</title>
+</head>
+
+<body>
+  <div class="container-xl">
+    <div class="row row-cols-1 mt-3">
+      <h1 class="mb-0" align="center">Аварийность на дорогах России</h1>
+    </div>
+    <div class="row row-cols-1 bg-light p-4">
+      <div class="graph-container">
+          <canvas class="canvas" id="canvas"></canvas>
+      </div>
+      <br><br>
+
+    </div>
+    <div class="row row-cols-1 bg-secondary p-1">
+      <div class="d-flex justify-content-between text-white">
+        <div class="ml-2 text-right">По данным сайта ГИБДД.РФ</div>
+
+        <div class="mr-2">
+          <a class="text-white link" href="16bc.ru">
+            <img src="{{ url_for('static',filename='logo.png') }}" class="smlogo" alt="©"> 16bc.ru</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- ___________________________ SCRIPTS_____________________________ -->
+
+
+<script language="JavaScript">
+  var ctx = document.getElementById('canvas').getContext('2d');
+  var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ date|safe }},
+                datasets: [
+                        {
+                        label: 'Количество ДТП',
+                        data: {{ count }},
+                        fill: false,
+                        backgroundColor: 'rgba(54, 162, 235, 1)',
+                        borderColor: 'rgba(54, 162, 235, 0.8)',
+                        borderWidth: 6
+                        },
+                        {
+                        label: 'Ранено',
+                        data: {{ wounded }},
+                        fill: false,
+                        backgroundColor: 'rgba(138, 64, 171, 1)',
+                        borderColor: 'rgba(138, 64, 171, 0.8)'
+                        },
+                        {
+                        label: 'Погибло',
+                        data: {{ dead }},
+                        fill: false,
+                        backgroundColor: 'rgba(195, 37, 44, 1)',
+                        borderColor: 'rgba(195, 37, 44, 0.8)'
+                        },
+                        {
+                        label: 'Ранено детей',
+                        data: {{ child_wounded }},
+                        fill: false,
+                        backgroundColor: 'rgba(225, 126, 204, 1)',
+                        borderColor: 'rgba(225, 126, 204, 0.8)',
+                        },
+                        {
+                        label: 'Погибло детей',
+                        data: {{ child_dead }},
+                        fill: false,
+                        backgroundColor: 'rgba(170, 170, 170, 1)',
+                        borderColor: 'rgba(170, 170, 170, 0.9)',
+                        yAxisID: 'child'
+                        }
+                ]
+            },
+            options: {
+              legend: {
+                labels: {
+                  fontSize: 15
+                  }
+              },
+              tooltips: {
+                titleFontSize: 14,
+                bodyFontSize: 14
+              },
+              elements: {
+                point: {
+                  radius: 4,
+                  hitRadius: 20,
+                  hoverRadius: 10,
+                },
+              },
+              scales: {
+                yAxes: [{
+                  ticks: {beginAtZero: true, maxTicksLimit: 10}
+                },
+                {
+                  id: 'child',
+                  position: 'right',
+                  scaleLabel: { display: true, labelString: 'Погибло детей'},
+                  ticks:{
+                    max: {{ child_dead|max * 2 }},
+                    stepSize: 1,
+                  },
+                  gridLines:{
+                    color: 'rgba(170, 170, 170, 0.6)',
+                    drawOnChartArea: false,
+                  }
+                }]
+              }
+            }
+        });
+</script>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(62278969, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/62278969" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+</body>
+</html>
