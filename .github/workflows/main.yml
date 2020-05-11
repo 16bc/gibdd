@@ -17,9 +17,6 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-
-    - name: Import remote stored data
-      run: wget "http://gibdd.16bc.ru/data"; mv data data.json; ll
       
     - name: Create ZIP
       run: zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./ -x *.git*
