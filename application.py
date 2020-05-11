@@ -1,9 +1,13 @@
 import json
 from flask import Flask
 from flask import render_template
+from flask_apscheduler import APScheduler
 import collector
 
 DATAFILE = "data.json"
+app = Flask(__name__)
+scheduler = APScheduler()
+
 
 def readfile(path) -> list:
     lists = [[], [], [], [], [], []]  # [date], [count], [dead], [child_death], [wounded], [child_wounded]
@@ -22,8 +26,11 @@ def readfile(path) -> list:
     return lists
 
 
-
-app = Flask(__name__)
+def scheduledTask():
+    try:
+        print(collector.collect())
+    except:
+        collector.send_sms()
 
 
 @app.route("/")
@@ -45,5 +52,13 @@ def do_collect():
     return collector.collect()
 
 
+# For test
+@app.route("/sms")
+def do_collect():
+    return collector.send_sms()
+
+
 if __name__ == "__main__":
+    scheduler.add_job(id='Scheduled task', func=scheduledTask, trigger='interval', hours=3)
+    scheduler.start()
     app.run(host='0.0.0.0')
