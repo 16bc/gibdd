@@ -52,12 +52,6 @@ def do_collect():
     return collector.collect()
 
 
-# For test
-@app.route("/sms")
-def test_sms():
-    return collector.send_sms()
-
-
 if __name__ == "__main__":
     scheduler.add_job(id='Scheduled task', func=scheduledTask, trigger='interval', hours=3)
     scheduler.start()
