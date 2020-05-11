@@ -54,7 +54,7 @@ def do_collect():
 
 # For test
 @app.route("/sms")
-def do_collect():
+def test_sms():
     return collector.send_sms()
 
 
