@@ -10,6 +10,12 @@ env:
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - "README.md"
+      - ".github/**"
+      - "LICENSE"
+      - "data.json"
+      - ".git**"
 
 jobs:
   Build_and_copy:
