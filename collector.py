@@ -67,8 +67,7 @@ def writefile(data, path="./data.json"):
         exit(1)
 
 
-if __name__ == '__main__':
-
+def collect():
     url = 'https://гибдд.рф/'
     # Читаем и десерим последнюю строку из файла
     last_list = readfile()
@@ -80,8 +79,10 @@ if __name__ == '__main__':
 
     if not last_list or (last_list[0] != new_datalist[0]):
         if writefile(new_datalist) == 0:
-            print("Данные добавлены.")
-
+            return "Данные добавлены."
     else:
-        print("Данные не обновлены.")
-        exit(0)
+        return "Данные не обновлены."
+
+
+if __name__ == '__main__':
+    collect()

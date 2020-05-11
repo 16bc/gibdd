@@ -6,27 +6,28 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <script src="{{ url_for('static',filename='Chart.min.js') }}"></script>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
   <title>Аварийность на дорогах России</title>
 </head>
 
 <body>
   <div class="container-xl">
     <div class="row row-cols-1 mt-3">
-      <h1 class="mb-0" align="center">Аварийность на дорогах России</h1>
+      <h1 class="mb-0" align="center">Динамика ДТП в России</h1>
     </div>
     <div class="row row-cols-1 bg-light p-4">
       <div class="graph-container">
           <canvas class="canvas" id="canvas"></canvas>
       </div>
       <br><br>
-
     </div>
+
     <div class="row row-cols-1 bg-secondary p-1">
       <div class="d-flex justify-content-between text-white">
         <div class="ml-2 text-right">По данным сайта ГИБДД.РФ</div>
 
         <div class="mr-2">
-          <a class="text-white link" href="16bc.ru">
+          <a class="text-white link" href="http://16bc.ru">
             <img src="{{ url_for('static',filename='logo.png') }}" class="smlogo" alt="©"> 16bc.ru</a>
         </div>
       </div>
