@@ -1,12 +1,12 @@
 import json
 from flask import Flask
 from flask import render_template
-from flask_apscheduler import APScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 import collector
 
 DATAFILE = "data.json"
+update_interval = 4
 app = Flask(__name__)
-scheduler = APScheduler()
 
 
 def readfile(path) -> list:
@@ -22,15 +22,14 @@ def readfile(path) -> list:
             except:
                 print(f"Read string in file error! Check the file {path}")
                 continue
-    print(lists)
     return lists
 
 
-def scheduledTask():
-    try:
-        print(collector.collect())
-    except:
-        collector.send_sms()
+@app.before_first_request
+def initialize():
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(do_collect, 'interval', hours=update_interval, id='my_job')
+    scheduler.start()
 
 
 @app.route("/")
@@ -49,10 +48,14 @@ def get_data():
 
 @app.route("/update")
 def do_collect():
-    return collector.collect()
+    print("Data updating...")
+    try:
+        return collector.collect()
+    except:
+        return collector.send_sms()
+
 
 
 if __name__ == "__main__":
-    scheduler.add_job(id='Scheduled task', func=scheduledTask, trigger='interval', hours=3)
-    scheduler.start()
+
     app.run(host='0.0.0.0')
