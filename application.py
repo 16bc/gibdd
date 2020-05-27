@@ -24,12 +24,12 @@ def readfile(path) -> list:
                 continue
     return lists
 
-
-@app.before_first_request
-def initialize():
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(do_collect, 'interval', hours=update_interval, id='my_job')
-    scheduler.start()
+# C 25.05.2020 виджет с данными на главной странице сайта гибдд.рф убрали. :’-(
+# @app.before_first_request
+# def initialize():
+#     scheduler = BackgroundScheduler()
+#     scheduler.add_job(do_collect, 'interval', hours=update_interval, id='my_job')
+#     scheduler.start()
 
 
 @app.route("/")
