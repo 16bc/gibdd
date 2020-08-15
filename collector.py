@@ -6,16 +6,18 @@ from bs4 import BeautifulSoup as bs
 import requests
 import json
 from time import sleep
-
+import re
 
 def send_sms():
     # Phone number file workflow creating from secrets before package and deployment
     try:
         with open("phone.sms", 'r') as file:
-            phone_number = file.read(11)
+            phone_number = re.sub('^\s+|\n|\r|\s+$', '', file.readline())
+            api_id = re.sub('^\s+|\n|\r|\s+$', '', file.readline())
             print("Phone number was read.")
-        url = f"https://sms.ru/sms/send?api_id=3448D158-B7FC-24C2-DC45-155EDBFC4B7F&to={phone_number}&msg=Ошибка_GIBDD&json=1"
+        url = f"https://sms.ru/sms/send?api_id={api_id}&to={phone_number}&msg=Ошибка_GIBDD&json=1"
         return requests.get(url)
+        return 0
     except:
         print("Send SMS Error!!!")
         return 0
