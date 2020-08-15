@@ -17,7 +17,6 @@ def send_sms():
             print("Phone number was read.")
         url = f"https://sms.ru/sms/send?api_id={api_id}&to={phone_number}&msg=Ошибка_GIBDD&json=1"
         return requests.get(url)
-        return 0
     except:
         print("Send SMS Error!!!")
         return 0
