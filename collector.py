@@ -8,6 +8,7 @@ import json
 from time import sleep
 import re
 
+
 def send_sms():
     # Phone number file workflow creating from secrets before package and deployment
     try:
@@ -59,19 +60,20 @@ def get_remote_data(url="https://гибдд.рф/"):
         return 0
 
 
-
-def readfile(path="./data.json"):
-    try:
-        with open(path, 'r') as file:
-            last_string = file.readlines()[-1]  # [date, {stats}] or [0]
+def readfile(path="./data.json") -> list:
+    lists = [[], [], [], [], [], []]  # [date], [count], [dead], [child_death], [wounded], [child_wounded]
+    with open(path, 'r') as file:
+        print('File opened')
+        for string in file:
             try:
-                return json.loads(last_string)
+                lst = json.loads(string)
+                lists[0].append(lst[0])  # Чтобы сохранить как текст.
+                for i in range(1, 6):
+                    lists[i].append(int(lst[i]))
             except:
-                return False
-    except:
-        print(f"Read file error! Check the file {path}")
-        send_sms()
-        exit(1)
+                print(f"Read string in file error! Check the file {path}")
+                continue
+    return lists
 
 
 def writefile(data, path="./data.json"):
@@ -86,10 +88,24 @@ def writefile(data, path="./data.json"):
         exit(1)
 
 
+def read_last_string(path="./data.json"):
+    try:
+        with open(path, 'r') as file:
+            last_string = file.readlines()[-1]  # [date, {stats}] or [0]
+            try:
+                return json.loads(last_string)
+            except:
+                return False
+    except:
+        print(f"Read file error! Check the file {path}")
+        send_sms()
+        exit(1)
+
+
 def collect():
     url = 'https://гибдд.рф/'
     # Читаем и десерим последнюю строку из файла
-    last_list = readfile()
+    last_list = read_last_string()
 
     # Получаем лист с данными с сайта
     new_datalist = get_remote_data(url)
@@ -97,9 +113,17 @@ def collect():
     # Если дата из файла и дата с сайта отличаются, пишем в файл новую строку:
     if not last_list or (last_list[0] != new_datalist[0]):
         if writefile(new_datalist) == 0:
-            return "Данные добавлены."
+            return f"Данные добавлены: {new_datalist}"
     else:
         return "Данные не обновлены."
+
+
+def convert(path='./data.json') -> dict:
+    data_dict = {}
+    lists = readfile(path)
+    for i, date in enumerate(lists[0]):
+        data_dict[date] = [lists[1][i], lists[2][i], lists[3][i], lists[4][i], lists[5][i]]
+    return data_dict
 
 
 if __name__ == '__main__':
